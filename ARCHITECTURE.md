@@ -27,7 +27,7 @@ The technology stack was chosen to build a modern, cloud-native application foun
 | Containerization    | Docker                           | The universal standard for packaging applications, ensuring consistency across environments.       |
 | Orchestration       | Kubernetes (k8s)                 | The de facto standard for container orchestration, providing automated scaling and self-healing.         |
 | Event Streaming     | Apache Kafka                     | The industry-standard platform for building real-time, high-throughput data pipelines.             |
-| API Gateway         | Traefik Proxy                    | A cloud-native gateway that automatically discovers services from Kubernetes.                      |
+| API Gateway         | ingress-nginx                    | The de facto standard, community-managed Ingress controller for Kubernetes.                        |
 | Service Discovery   | HashiCorp Consul                 | A lightweight and reliable tool for service discovery and dynamic configuration.                 |
 | Observability       | Grafana, Prometheus, Loki, Tempo | A powerful, integrated stack for visualizing metrics, logs, and traces.                          |
 

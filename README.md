@@ -1,5 +1,7 @@
 # Project Phoenix: The Phoenix Financial Engine
 
+> **Project Purpose Note:** This project serves as a comprehensive, production-grade demonstration of the skills and technologies required to build a modern, cloud-native application. It showcases expertise in microservices architecture, event-driven systems with Kafka, CI/CD, and end-to-end observability.
+
 ## Vision
 
 The Phoenix platform is the core financial engine for a modern fintech company, designed to protect the business and its customers by identifying fraudulent transactions in real-time. This project serves as a production-grade blueprint for a scalable, observable, and resilient microservices architecture.
@@ -19,26 +21,24 @@ In the fast-paced world of financial technology, the ability to analyze and reac
 
 The technology stack was chosen to build a modern, cloud-native application foundation based on mature, industry-standard tools.
 
-| Component           | Selected Technology                               | Justification                                                                                                |
-| ------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| Language / Runtime  | Java 11 (LTS)                                     | A mature ecosystem with strong typing and high performance suitable for enterprise applications. |
-| Containerization    | Docker                                            | The universal standard for packaging applications, ensuring consistency across environments. |
-| Orchestration       | Kubernetes (k8s)                                  | The de facto standard for container orchestration, providing automated scaling and self-healing. |
-| Event Streaming     | Apache Kafka                                      | The industry-standard platform for building real-time, high-throughput data pipelines. |
-| API Gateway         | Traefik Proxy                                     | A cloud-native gateway that automatically discovers services from Kubernetes. |
-| Service Discovery   | HashiCorp Consul                                  | A lightweight and reliable tool for service discovery and dynamic configuration. |
-| Observability       | Grafana, Prometheus, Loki, Tempo                  | A powerful, integrated stack for visualizing metrics, logs, and traces. |
+| Component           | Selected Technology              | Justification                                                                                                |
+| ------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Language / Runtime  | Java 11 (LTS)                    | A mature ecosystem with strong typing and high performance suitable for enterprise applications.             |
+| Containerization    | Docker                           | The universal standard for packaging applications, ensuring consistency across environments.       |
+| Orchestration       | Kubernetes (k8s)                 | The de facto standard for container orchestration, providing automated scaling and self-healing.         |
+| Event Streaming     | Apache Kafka                     | The industry-standard platform for building real-time, high-throughput data pipelines.             |
+| API Gateway         | ingress-nginx                    | The de facto standard, community-managed Ingress controller for Kubernetes.                        |
+| Service Discovery   | HashiCorp Consul                 | A lightweight and reliable tool for service discovery and dynamic configuration.                 |
+| Observability       | Grafana, Prometheus, Loki, Tempo | A powerful, integrated stack for visualizing metrics, logs, and traces.                          |
 
 ## Getting Started
 
 The entire platform and its dependencies can be provisioned locally on a Docker Desktop environment.
 
-A detailed, step-by-step guide for setup and deployment is available in the [PROJECT_PLAN.md](PROJECT_PLAN.md) file.
+A detailed, step-by-step guide for setup and deployment is available in the [LOCAL_SETUP.md](LOCAL_SETUP.md) file.
 
 ## Project Documentation
 
 * **[ARCHITECTURE.md](ARCHITECTURE.md)**: For a deep dive into the system architecture, design principles, and component responsibilities.
 * **[PROJECT_PLAN.md](PROJECT_PLAN.md)**: For a detailed breakdown of the development roadmap and task list.
 * **[docs/ADRs/README.md](docs/ADRs/README.md)**: For a log of key architectural decisions made during the project's lifecycle.
-
-> **Project Purpose Note:** This project serves as a comprehensive, production-grade demonstration of the skills and technologies required to build a modern, cloud-native application. It showcases expertise in microservices architecture, event-driven systems with Kafka, CI/CD, and end-to-end observability.

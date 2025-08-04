@@ -4,7 +4,7 @@ This directory contains the log of all significant architectural decisions made 
 
 ## ADR Log
 
-| ID                                                             | Title                                          | Status   | Date         |
-| -------------------------------------------------------------- | ---------------------------------------------- | -------- | ------------ |
-| [ADR-001](./001-choice-of-event-streaming-platform.md) | Use Apache Kafka for the Core Transaction Stream | Accepted | 2025-08-04   |
-|                                                                |                                                |          |              |
+| ID                                                             | Title                                                  | Status   | Date         |
+| -------------------------------------------------------------- | ------------------------------------------------------ | -------- | ------------ |
+| [ADR-001](./001-choice-of-event-streaming-platform.md)         | Use Apache Kafka for the Core Transaction Stream       | Accepted | 2025-08-04   |
+| [ADR-002](./002-ingress-controller-choice.md)                  | Replace Traefik with ingress-nginx as API Gateway      | Accepted | 2025-08-04   |

@@ -23,7 +23,6 @@ To ensure a clean separation of concerns, the project will adhere to the followi
 │   └── manifests/                # Kubernetes manifests for all components
 └── scripts/                      # Helper scripts
 ```
-
 ## 3. Phased Deliverables
 
 The project is broken down into three main deliverables, with a total estimated duration of 90 hours.
@@ -40,7 +39,7 @@ The project is broken down into three main deliverables, with a total estimated 
     * **Description**: Provision a local Kubernetes cluster using Kind, with remapped ports (80->8088, 443->8443) to avoid conflicts with existing services on the host machine.
 * **Task 1.3: Deploy Foundational Platforms (Gateway & Service Discovery)**
     * **Estimate**: 3 Hours
-    * **Description**: Deploy Traefik (API Gateway) and HashiCorp Consul (Service Discovery) into the Kubernetes cluster using their official Helm charts.
+    * **Description**: Deploy ingress-nginx (API Gateway) and HashiCorp Consul (Service Discovery) into the Kubernetes cluster using their official Helm charts.
 * **Task 1.4: Deploy the Observability Stack & Kafka**
     * **Estimate**: 6 Hours
     * **Description**: Deploy Grafana, Prometheus, Loki, Tempo, and a Kafka cluster into Kubernetes to power the platform's observability and transaction stream capabilities.
