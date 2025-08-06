@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+<!--    This loki setup will be used when we solve the local installation of loki, for now we let this configuration as it is
+        We will see some errors at console output when the project is starting -->
+    <appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
+        <http>
+            <url>http://loki-write.loki.svc.cluster.local:3100/loki/api/v1/push</url>
+        </http>
+        <format>
+            <label>
+                <pattern>app=${spring.application.name},host=${HOSTNAME},profile=${spring.profiles.active}</pattern>
+            </label>
+            <message>
+                <pattern>{"level":"%level", "class":"%logger{36}", "thread":"%thread", "message": "%message", "stack_trace": "%ex"}</pattern>
+            </message>
+        </format>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <springProfile name="!local">
+            <appender-ref ref="LOKI"/>
+        </springProfile>
+    </root>
+
+</configuration>

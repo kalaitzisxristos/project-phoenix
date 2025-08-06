@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: service-template-monitor
+  labels:
+    # This label connects the monitor to our Prometheus instance
+    release: prometheus
+spec:
+  selector:
+    # This tells the monitor to find Services with the 'app: service-template' label
+    matchLabels:
+      app: service-template
+  endpoints:
+    - port: http
+      # Scrape metrics from the /actuator/prometheus endpoint every 15 seconds
+      path: /actuator/prometheus
+      interval: 15s

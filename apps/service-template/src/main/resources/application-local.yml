@@ -1,0 +1,13 @@
+# Configuration overrides for the 'local' profile
+# It helps intellij identify local profile and use it
+
+# This is a broader 'off' switch for all Consul features.
+# It's stronger than just disabling discovery.
+spring:
+  cloud:
+    consul:
+      enabled: false
+
+# You can keep this to test or remove it. The application will run on the default 8080 if removed.
+server:
+  port: 8081

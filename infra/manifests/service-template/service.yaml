@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-template
+  labels:
+    # This label is important for Prometheus to find our service later
+    app: service-template
+spec:
+  selector:
+    app: service-template
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

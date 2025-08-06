@@ -1,0 +1,11 @@
+# This tells all components to use the name 'consul'.
+global:
+  name: consul
+
+# This explicitly enables the controller which manages Consul's custom resources.
+controller:
+  enabled: true
+
+# This explicitly enables the sidecar injector and its webhook.
+connectInject:
+  enabled: true
