@@ -1,0 +1,479 @@
+ MINGW64 /c/personal/project-phoenix (master)
+$ ./scripts/setup-cluster-local.sh
+
+🚀
+🚀 Deleting any existing Kind cluster...
+🚀
+Deleting cluster "phoenix-cluster" ...
+Deleted nodes: ["phoenix-cluster-control-plane" "phoenix-cluster-worker2" "phoenix-cluster-worker"]
+
+🚀
+🚀 Creating Kind cluster...
+🚀
+Creating cluster "phoenix-cluster" ...
+ • Ensuring node image (kindest/node:v1.33.1) 🖼  ...
+ ✓ Ensuring node image (kindest/node:v1.33.1) 🖼
+ • Preparing nodes 📦 📦 📦   ...
+ ✓ Preparing nodes 📦 📦 📦
+ • Writing configuration 📜  ...
+ ✓ Writing configuration 📜
+ • Starting control-plane 🕹️  ...
+ ✓ Starting control-plane 🕹️
+ • Installing CNI 🔌  ...
+ ✓ Installing CNI 🔌
+ • Installing StorageClass 💾  ...
+ ✓ Installing StorageClass 💾
+ • Joining worker nodes 🚜  ...
+ ✓ Joining worker nodes 🚜
+Set kubectl context to "kind-phoenix-cluster"
+You can now use your cluster with:
+
+kubectl cluster-info --context kind-phoenix-cluster
+
+Not sure what to do next? 😅  Check out https://kind.sigs.k8s.io/docs/user/quick-start/
+
+📦
+📦 Adding Helm repos...
+📦
+"hashicorp" already exists with the same configuration, skipping
+"prometheus-community" already exists with the same configuration, skipping
+"grafana" already exists with the same configuration, skipping
+"bitnami" already exists with the same configuration, skipping
+"ingress-nginx" already exists with the same configuration, skipping
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "hashicorp" chart repository
+...Successfully got an update from the "ingress-nginx" chart repository
+...Successfully got an update from the "grafana" chart repository
+...Successfully got an update from the "prometheus-community" chart repository
+...Successfully got an update from the "bitnami" chart repository
+Update Complete. ⎈Happy Helming!⎈
+
+🌐
+🌐 Installing ingress-nginx...
+🌐
+NAME: ingress-nginx
+LAST DEPLOYED: Thu Aug  7 02:11:59 2025
+NAMESPACE: ingress-nginx
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+The ingress-nginx controller has been installed.
+It may take a few minutes for the load balancer IP to be available.
+You can watch the status by running 'kubectl get service --namespace ingress-nginx ingress-nginx-controller --output wide --watch'
+
+An example Ingress that makes use of the controller:
+  apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: example
+    namespace: foo
+  spec:
+    ingressClassName: nginx
+    rules:
+      - host: www.example.com
+        http:
+          paths:
+            - pathType: Prefix
+              backend:
+                service:
+                  name: exampleService
+                  port:
+                    number: 80
+              path: /
+    # This section is only required if TLS is to be enabled for the Ingress
+    tls:
+      - hosts:
+        - www.example.com
+        secretName: example-tls
+
+If TLS is enabled for the Ingress, a Secret containing the certificate and key must also be provided:
+
+  apiVersion: v1
+  kind: Secret
+  metadata:
+    name: example-tls
+    namespace: foo
+  data:
+    tls.crt: <base64 encoded cert>
+    tls.key: <base64 encoded key>
+  type: kubernetes.io/tls
+
+📊
+📊 Installing Prometheus stack...
+📊
+NAME: prometheus
+LAST DEPLOYED: Thu Aug  7 02:12:49 2025
+NAMESPACE: prometheus
+STATUS: deployed
+REVISION: 1
+NOTES:
+kube-prometheus-stack has been installed. Check its status by running:
+  kubectl --namespace prometheus get pods -l "release=prometheus"
+
+Get Grafana 'admin' user password by running:
+
+  kubectl --namespace prometheus get secrets prometheus-grafana -o jsonpath="{.data.admin-password}" | base64 -d ; echo
+
+Access Grafana local instance:
+
+  export POD_NAME=$(kubectl --namespace prometheus get pod -l "app.kubernetes.io/name=grafana,app.kubernetes.io/instance=prometheus" -oname)
+  kubectl --namespace prometheus port-forward $POD_NAME 3000
+
+Visit https://github.com/prometheus-operator/kube-prometheus for instructions on how to create & configure Alertmanager and Prometheus instances using the Operator.
+
+🧭
+🧭 Installing Consul (with Gateway CRDs)...
+🧭
+NAME: consul
+LAST DEPLOYED: Thu Aug  7 02:13:08 2025
+NAMESPACE: consul
+STATUS: deployed
+REVISION: 1
+NOTES:
+Thank you for installing HashiCorp Consul!
+
+Your release is named consul.
+
+To learn more about the release, run:
+
+  $ helm status consul --namespace consul
+  $ helm get all consul --namespace consul
+
+Consul on Kubernetes Documentation:
+https://www.consul.io/docs/platform/k8s
+
+Consul on Kubernetes CLI Reference:
+https://www.consul.io/docs/k8s/k8s-cli
+
+🕓
+🕓 Installing Tempo (tracing backend)...
+🕓
+NAME: tempo
+LAST DEPLOYED: Thu Aug  7 02:15:01 2025
+NAMESPACE: tempo
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+
+📬
+📬 Installing Kafka...
+📬
+NAME: kafka
+LAST DEPLOYED: Thu Aug  7 02:15:06 2025
+NAMESPACE: kafka
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+CHART NAME: kafka
+CHART VERSION: 32.3.10
+APP VERSION: 4.0.0
+
+⚠ WARNING: Since August 28th, 2025, only a limited subset of images/charts are available for free.
+    Subscribe to Bitnami Secure Images to receive continued support and security updates.
+    More info at https://bitnami.com and https://github.com/bitnami/containers/issues/83267
+
+** Please be patient while the chart is being deployed **
+
+Kafka can be accessed by consumers via port 9092 on the following DNS name from within your cluster:
+
+    kafka.kafka.svc.cluster.local
+
+Each Kafka broker can be accessed by producers via port 9092 on the following DNS name(s) from within your cluster:
+
+    kafka-controller-0.kafka-controller-headless.kafka.svc.cluster.local:9092
+    kafka-controller-1.kafka-controller-headless.kafka.svc.cluster.local:9092
+    kafka-controller-2.kafka-controller-headless.kafka.svc.cluster.local:9092
+
+The CLIENT listener for Kafka client connections from within your cluster have been configured with the following security settings:
+    - SASL authentication
+
+To connect a client to your Kafka, you need to create the 'client.properties' configuration files with the content below:
+
+security.protocol=SASL_PLAINTEXT
+sasl.mechanism=SCRAM-SHA-256
+sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required \
+    username="user1" \
+    password="$(kubectl get secret kafka-user-passwords --namespace kafka -o jsonpath='{.data.client-passwords}' | base64 -d | cut -d , -f 1)";
+
+To create a pod that you can use as a Kafka client run the following commands:
+
+    kubectl run kafka-client --restart='Never' --image docker.io/bitnami/kafka:4.0.0-debian-12-r8 --namespace kafka --command -- sleep infinity
+    kubectl cp --namespace kafka /path/to/client.properties kafka-client:/tmp/client.properties
+    kubectl exec --tty -i kafka-client --namespace kafka -- bash
+
+    PRODUCER:
+        kafka-console-producer.sh \
+            --producer.config /tmp/client.properties \
+            --bootstrap-server kafka.kafka.svc.cluster.local:9092 \
+            --topic test
+
+    CONSUMER:
+        kafka-console-consumer.sh \
+            --consumer.config /tmp/client.properties \
+            --bootstrap-server kafka.kafka.svc.cluster.local:9092 \
+            --topic test \
+            --from-beginning
+
+WARNING: There are "resources" sections in the chart not set. Using "resourcesPreset" is not recommended for production. For production installations, please set the following values according to your workload needs:
+  - controller.resources
+  - defaultInitContainers.prepareConfig.resources
++info https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+
+🔧
+🔧 Building service-template image...
+🔧
+[INFO] Scanning for projects...
+[WARNING]
+[WARNING] Some problems were encountered while building the effective model for com.phoenix.libs:phoenix-shared:jar:1.0-SNAPSHOT
+[WARNING] 'build.plugins.plugin.(groupId:artifactId)' must be unique but found duplicate declaration of plugin org.apache.maven.plugins:maven-compiler-plugin @ line 59, column 21
+[WARNING]
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING]
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING]
+[INFO]
+[INFO] ------------------< com.phoenix.libs:phoenix-shared >-------------------
+[INFO] Building phoenix-shared 1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- clean:3.2.0:clean (default-clean) @ phoenix-shared ---
+[INFO] Deleting C:\personal\project-phoenix\libs\phoenix-shared\target
+[INFO]
+[INFO] --- toolchains:3.1.0:toolchain (default) @ phoenix-shared ---
+[INFO] Required toolchain: jdk [ vendor='amazon' version='17' ]
+[INFO] Found matching toolchain for type jdk: JDK[C:\Users\P70969\.jdks\corretto-17.0.16]
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ phoenix-shared ---
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] skip non existing resourceDirectory C:\personal\project-phoenix\libs\phoenix-shared\src\main\resources
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ phoenix-shared ---
+[INFO] Toolchain in maven-compiler-plugin: JDK[C:\Users\P70969\.jdks\corretto-17.0.16]
+[INFO] Changes detected - recompiling the module! :source
+[WARNING] File encoding has not been set, using platform encoding Cp1252, i.e. build is platform dependent!
+[INFO] Compiling 1 source file with javac [forked debug target 17] to target\classes
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ phoenix-shared ---
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] skip non existing resourceDirectory C:\personal\project-phoenix\libs\phoenix-shared\src\test\resources
+[INFO]
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ phoenix-shared ---
+[INFO] Toolchain in maven-compiler-plugin: JDK[C:\Users\P70969\.jdks\corretto-17.0.16]
+[INFO] No sources to compile
+[INFO]
+[INFO] --- surefire:3.2.5:test (default-test) @ phoenix-shared ---
+[INFO] Toolchain in maven-surefire-plugin: JDK[C:\Users\P70969\.jdks\corretto-17.0.16]
+[INFO] No tests to run.
+[INFO]
+[INFO] --- jar:3.4.1:jar (default-jar) @ phoenix-shared ---
+[INFO] Set Build-Jdk-Spec based on toolchain in maven-jar-plugin JDK[C:\Users\P70969\.jdks\corretto-17.0.16]
+[INFO] Building jar: C:\personal\project-phoenix\libs\phoenix-shared\target\phoenix-shared-1.0-SNAPSHOT.jar
+[INFO]
+[INFO] --- install:3.1.2:install (default-install) @ phoenix-shared ---
+[INFO] Installing C:\personal\project-phoenix\libs\phoenix-shared\pom.xml to C:\Users\P70969\.m2\repository\com\phoenix\libs\phoenix-shared\1.0-SNAPSHOT\phoenix-shared-1.0-SNAPSHOT.pom
+[INFO] Installing C:\personal\project-phoenix\libs\phoenix-shared\target\phoenix-shared-1.0-SNAPSHOT.jar to C:\Users\P70969\.m2\repository\com\phoenix\libs\phoenix-shared\1.0-SNAPSHOT\phoenix-shared-1.0-SNAPSHOT.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  6.225 s
+[INFO] Finished at: 2025-08-07T02:15:26+03:00
+[INFO] ------------------------------------------------------------------------
+
+🐳
+🐳 Building Docker image for service-template...
+🐳
+[+] Building 118.7s (14/14) FINISHED                                                                                                                                                         docker:desktop-linux
+ => [internal] load build definition from Dockerfile                                                                                                                                                         0.0s
+ => => transferring dockerfile: 1.36kB                                                                                                                                                                       0.0s
+ => [internal] load metadata for docker.io/library/eclipse-temurin:17-jre-jammy                                                                                                                             10.1s
+ => [internal] load metadata for docker.io/library/maven:3.9-eclipse-temurin-17                                                                                                                             56.1s
+ => [internal] load .dockerignore                                                                                                                                                                            0.0s
+ => => transferring context: 2B                                                                                                                                                                              0.0s
+ => [builder 1/5] FROM docker.io/library/maven:3.9-eclipse-temurin-17@sha256:ff02cc25f01fa456a927ff38aab1fb9d2e74fe81fcf1457a58bf9306f2dc8472                                                                0.1s
+ => => resolve docker.io/library/maven:3.9-eclipse-temurin-17@sha256:ff02cc25f01fa456a927ff38aab1fb9d2e74fe81fcf1457a58bf9306f2dc8472                                                                        0.1s
+ => [internal] load build context                                                                                                                                                                            0.2s
+ => => transferring context: 125.47kB                                                                                                                                                                        0.2s
+ => [stage-1 1/3] FROM docker.io/library/eclipse-temurin:17-jre-jammy@sha256:300c145ec4cf75f22c205b72eb233977a585d91cf530947d15054e270445f00d                                                                0.1s
+ => => resolve docker.io/library/eclipse-temurin:17-jre-jammy@sha256:300c145ec4cf75f22c205b72eb233977a585d91cf530947d15054e270445f00d                                                                        0.1s
+ => CACHED [builder 2/5] WORKDIR /app                                                                                                                                                                        0.0s
+ => [builder 3/5] COPY . .                                                                                                                                                                                   0.9s
+ => [builder 4/5] RUN mvn -f libs/phoenix-shared/pom.xml clean install -Pdocker-build -DskipTests                                                                                                           16.0s
+ => [builder 5/5] RUN mvn -f apps/service-template/pom.xml clean package -Pdocker-build -DskipTests                                                                                                         40.8s
+ => CACHED [stage-1 2/3] WORKDIR /app                                                                                                                                                                        0.0s
+ => [stage-1 3/3] COPY --from=builder /app/apps/service-template/target/*.jar app.jar                                                                                                                        0.2s
+ => exporting to image                                                                                                                                                                                       3.7s
+ => => exporting layers                                                                                                                                                                                      3.1s
+ => => exporting manifest sha256:760890e74635f2cb62929dff58f442ad00cb86873f868d06a9edbbb415c359d9                                                                                                            0.0s
+ => => exporting config sha256:573f944d36bd42e4ba29005a3d06e784b813cd0dc1f1f415ceb28727824f31d4                                                                                                              0.0s
+ => => exporting attestation manifest sha256:6d3cb5de6905dd9fb79f6319dd56dc16d437845bf2b4bd308ac55119d850e317                                                                                                0.0s
+ => => exporting manifest list sha256:a1b63763d42e23e3193fd405a263307e9793955ceeb8e518af55e6863b6a5822                                                                                                       0.0s
+ => => naming to docker.io/library/service-template:1.0                                                                                                                                                      0.0s
+ => => unpacking to docker.io/library/service-template:1.0                                                                                                                                                   0.5s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/yjftgo4ym30tw22mkcvry17yt
+
+📦
+📦 Loading image into Kind...
+📦
+Image: "service-template:1.0" with ID "sha256:a1b63763d42e23e3193fd405a263307e9793955ceeb8e518af55e6863b6a5822" not yet present on node "phoenix-cluster-worker", loading...
+Image: "service-template:1.0" with ID "sha256:a1b63763d42e23e3193fd405a263307e9793955ceeb8e518af55e6863b6a5822" not yet present on node "phoenix-cluster-worker2", loading...
+Image: "service-template:1.0" with ID "sha256:a1b63763d42e23e3193fd405a263307e9793955ceeb8e518af55e6863b6a5822" not yet present on node "phoenix-cluster-control-plane", loading...
+
+🚢
+🚢 Deploying service-template to cluster...
+🚢
+deployment.apps/service-template created
+service/service-template created
+servicemonitor.monitoring.coreos.com/service-template-monitor created
+
+🔍
+🔍 Getting Helm releases...
+🔍
+NAME            NAMESPACE       REVISION        UPDATED                                 STATUS          CHART                           APP VERSION
+consul          consul          1               2025-08-07 02:13:08.7712487 +0300 EEST  deployed        consul-1.4.1                    1.18.1
+ingress-nginx   ingress-nginx   1               2025-08-07 02:11:59.8366805 +0300 EEST  deployed        ingress-nginx-4.13.0            1.13.0
+kafka           kafka           1               2025-08-07 02:15:06.9134325 +0300 EEST  deployed        kafka-32.3.10                   4.0.0
+prometheus      prometheus      1               2025-08-07 02:12:49.3913025 +0300 EEST  deployed        kube-prometheus-stack-75.17.1   v0.83.0
+tempo           tempo           1               2025-08-07 02:15:01.1531036 +0300 EEST  deployed        tempo-1.23.2                    2.8.1
+
+🔍
+🔍 Getting all pods...
+🔍
+NAMESPACE            NAME                                                     READY   STATUS              RESTARTS   AGE
+consul               consul-connect-injector-69b85cb48-5m8m9                  1/1     Running             0          4m46s
+consul               consul-server-0                                          1/1     Running             0          4m46s
+consul               consul-webhook-cert-manager-78b84bd649-2hqmb             1/1     Running             0          4m46s
+default              service-template-6db65f699b-m5znc                        0/1     ContainerCreating   0          1s
+ingress-nginx        ingress-nginx-controller-78d57d8578-nzrg8                1/1     Running             0          5m37s
+kafka                kafka-controller-0                                       1/1     Running             0          2m50s
+kafka                kafka-controller-1                                       1/1     Running             0          2m50s
+kafka                kafka-controller-2                                       1/1     Running             0          2m50s
+kube-system          coredns-674b8bbfcf-2t7zp                                 1/1     Running             0          6m13s
+kube-system          coredns-674b8bbfcf-d7cfl                                 1/1     Running             0          6m13s
+kube-system          etcd-phoenix-cluster-control-plane                       1/1     Running             0          6m20s
+kube-system          kindnet-5z9xt                                            1/1     Running             0          6m10s
+kube-system          kindnet-mzvgm                                            1/1     Running             0          6m13s
+kube-system          kindnet-rf6hm                                            1/1     Running             0          6m10s
+kube-system          kube-apiserver-phoenix-cluster-control-plane             1/1     Running             0          6m18s
+kube-system          kube-controller-manager-phoenix-cluster-control-plane    1/1     Running             0          6m19s
+kube-system          kube-proxy-2j4gk                                         1/1     Running             0          6m10s
+kube-system          kube-proxy-6fzcj                                         1/1     Running             0          6m10s
+kube-system          kube-proxy-fzxh9                                         1/1     Running             0          6m13s
+kube-system          kube-scheduler-phoenix-cluster-control-plane             1/1     Running             0          6m20s
+local-path-storage   local-path-provisioner-7dc846544d-8kpww                  1/1     Running             0          6m13s
+prometheus           alertmanager-prometheus-kube-prometheus-alertmanager-0   2/2     Running             0          2m1s
+prometheus           prometheus-grafana-cc8cd94db-jxbhd                       3/3     Running             0          4m56s
+prometheus           prometheus-kube-prometheus-operator-fc4fc767c-cfb28      1/1     Running             0          4m56s
+prometheus           prometheus-kube-state-metrics-7f5f75c85d-gcp9j           1/1     Running             0          4m56s
+prometheus           prometheus-prometheus-kube-prometheus-prometheus-0       2/2     Running             0          2m1s
+prometheus           prometheus-prometheus-node-exporter-hrl8s                1/1     Running             0          4m56s
+prometheus           prometheus-prometheus-node-exporter-snt86                1/1     Running             0          4m56s
+prometheus           prometheus-prometheus-node-exporter-z752n                1/1     Running             0          4m56s
+tempo                tempo-0                                                  1/1     Running             0          2m56s
+
+🔍
+🔍 Getting all services...
+🔍
+NAMESPACE       NAME                                                 TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)
+          AGE
+consul          consul-connect-injector                              ClusterIP      10.96.131.60    <none>        443/TCP
+          4m47s
+consul          consul-dns                                           ClusterIP      10.96.120.194   <none>        53/TCP,53/UDP
+          4m47s
+consul          consul-server                                        ClusterIP      None            <none>        8500/TCP,8502/TCP,8301/TCP,8301/UDP,8302/TCP,8302/UDP,8300/TCP,8600/TCP,8600/UDP
+          4m47s
+consul          consul-ui                                            ClusterIP      10.96.242.112   <none>        80/TCP
+          4m47s
+default         kubernetes                                           ClusterIP      10.96.0.1       <none>        443/TCP
+          6m20s
+default         service-template                                     ClusterIP      10.96.63.238    <none>        8080/TCP
+          1s
+ingress-nginx   ingress-nginx-controller                             LoadBalancer   10.96.49.90     <pending>     80:32486/TCP,443:30623/TCP
+          5m37s
+ingress-nginx   ingress-nginx-controller-admission                   ClusterIP      10.96.33.105    <none>        443/TCP
+          5m37s
+kafka           kafka                                                ClusterIP      10.96.86.140    <none>        9092/TCP
+          2m50s
+kafka           kafka-controller-headless                            ClusterIP      None            <none>        9094/TCP,9092/TCP,9093/TCP
+          2m50s
+kube-system     kube-dns                                             ClusterIP      10.96.0.10      <none>        53/UDP,53/TCP,9153/TCP
+          6m18s
+kube-system     prometheus-kube-prometheus-coredns                   ClusterIP      None            <none>        9153/TCP
+          4m57s
+kube-system     prometheus-kube-prometheus-kube-controller-manager   ClusterIP      None            <none>        10257/TCP
+          4m57s
+kube-system     prometheus-kube-prometheus-kube-etcd                 ClusterIP      None            <none>        2381/TCP
+          4m57s
+kube-system     prometheus-kube-prometheus-kube-proxy                ClusterIP      None            <none>        10249/TCP
+          4m57s
+kube-system     prometheus-kube-prometheus-kube-scheduler            ClusterIP      None            <none>        10259/TCP
+          4m57s
+kube-system     prometheus-kube-prometheus-kubelet                   ClusterIP      None            <none>        10250/TCP,10255/TCP,4194/TCP
+          4m45s
+prometheus      alertmanager-operated                                ClusterIP      None            <none>        9093/TCP,9094/TCP,9094/UDP
+          4m45s
+prometheus      prometheus-grafana                                   ClusterIP      10.96.203.64    <none>        80/TCP
+          4m57s
+prometheus      prometheus-kube-prometheus-alertmanager              ClusterIP      10.96.123.16    <none>        9093/TCP,8080/TCP
+          4m57s
+prometheus      prometheus-kube-prometheus-operator                  ClusterIP      10.96.227.222   <none>        443/TCP
+          4m57s
+prometheus      prometheus-kube-prometheus-prometheus                ClusterIP      10.96.20.21     <none>        9090/TCP,8080/TCP
+          4m57s
+prometheus      prometheus-kube-state-metrics                        ClusterIP      10.96.90.61     <none>        8080/TCP
+          4m57s
+prometheus      prometheus-operated                                  ClusterIP      None            <none>        9090/TCP
+          4m45s
+prometheus      prometheus-prometheus-node-exporter                  ClusterIP      10.96.8.18      <none>        9100/TCP
+          4m57s
+tempo           tempo                                                ClusterIP      10.96.123.208   <none>        6831/UDP,6832/UDP,3200/TCP,14268/TCP,14250/TCP,9411/TCP,55680/TCP,55681/TCP,4317/TCP,4318/TCP,55678/TCP   2m56s
+
+🔍
+🔍 Getting relevant CRDs...
+🔍
+apigateways.mesh.consul.hashicorp.com                2025-08-06T23:13:10Z
+controlplanerequestlimits.consul.hashicorp.com       2025-08-06T23:13:10Z
+exportedservices.consul.hashicorp.com                2025-08-06T23:13:10Z
+exportedservices.multicluster.consul.hashicorp.com   2025-08-06T23:13:10Z
+gatewayclassconfigs.consul.hashicorp.com             2025-08-06T23:13:10Z
+gatewayclassconfigs.mesh.consul.hashicorp.com        2025-08-06T23:13:10Z
+gatewayclasses.gateway.networking.k8s.io             2025-08-06T23:13:10Z
+gatewayclasses.mesh.consul.hashicorp.com             2025-08-06T23:13:10Z
+gatewaypolicies.consul.hashicorp.com                 2025-08-06T23:13:10Z
+gateways.gateway.networking.k8s.io                   2025-08-06T23:13:10Z
+grpcroutes.gateway.networking.k8s.io                 2025-08-06T23:13:10Z
+grpcroutes.mesh.consul.hashicorp.com                 2025-08-06T23:13:10Z
+httproutes.gateway.networking.k8s.io                 2025-08-06T23:13:10Z
+httproutes.mesh.consul.hashicorp.com                 2025-08-06T23:13:10Z
+ingressgateways.consul.hashicorp.com                 2025-08-06T23:13:10Z
+jwtproviders.consul.hashicorp.com                    2025-08-06T23:13:10Z
+meshconfigurations.mesh.consul.hashicorp.com         2025-08-06T23:13:10Z
+meshes.consul.hashicorp.com                          2025-08-06T23:13:10Z
+meshgateways.mesh.consul.hashicorp.com               2025-08-06T23:13:10Z
+meshservices.consul.hashicorp.com                    2025-08-06T23:13:10Z
+proxyconfigurations.mesh.consul.hashicorp.com        2025-08-06T23:13:10Z
+proxydefaults.consul.hashicorp.com                   2025-08-06T23:13:10Z
+referencegrants.gateway.networking.k8s.io            2025-08-06T23:13:10Z
+routeauthfilters.consul.hashicorp.com                2025-08-06T23:13:10Z
+routeretryfilters.consul.hashicorp.com               2025-08-06T23:13:10Z
+routetimeoutfilters.consul.hashicorp.com             2025-08-06T23:13:10Z
+samenessgroups.consul.hashicorp.com                  2025-08-06T23:13:10Z
+servicedefaults.consul.hashicorp.com                 2025-08-06T23:13:10Z
+serviceintentions.consul.hashicorp.com               2025-08-06T23:13:10Z
+serviceresolvers.consul.hashicorp.com                2025-08-06T23:13:10Z
+servicerouters.consul.hashicorp.com                  2025-08-06T23:13:10Z
+servicesplitters.consul.hashicorp.com                2025-08-06T23:13:10Z
+tcproutes.gateway.networking.k8s.io                  2025-08-06T23:13:10Z
+tcproutes.mesh.consul.hashicorp.com                  2025-08-06T23:13:10Z
+terminatinggateways.consul.hashicorp.com             2025-08-06T23:13:10Z
+tlsroutes.gateway.networking.k8s.io                  2025-08-06T23:13:10Z
+trafficpermissions.auth.consul.hashicorp.com         2025-08-06T23:13:10Z
+udproutes.gateway.networking.k8s.io                  2025-08-06T23:13:10Z
+
+✅
+✅ Setup complete.
+✅
+

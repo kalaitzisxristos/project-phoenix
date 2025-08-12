@@ -22,8 +22,8 @@ In the fast-paced world of financial technology, the ability to analyze and reac
 The technology stack was chosen to build a modern, cloud-native application foundation based on mature, industry-standard tools.
 
 | Component           | Selected Technology              | Justification                                                                                                |
-| ------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| Language / Runtime  | Java 11 (LTS)                    | A mature ecosystem with strong typing and high performance suitable for enterprise applications.             |
+| ------------------- |----------------------------------| ------------------------------------------------------------------------------------------------------------ |
+| Language / Runtime  | Java 17                          | A mature ecosystem with strong typing and high performance suitable for enterprise applications.             |
 | Containerization    | Docker                           | The universal standard for packaging applications, ensuring consistency across environments.       |
 | Orchestration       | Kubernetes (k8s)                 | The de facto standard for container orchestration, providing automated scaling and self-healing.         |
 | Event Streaming     | Apache Kafka                     | The industry-standard platform for building real-time, high-throughput data pipelines.             |

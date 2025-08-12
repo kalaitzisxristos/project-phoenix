@@ -1,0 +1,7 @@
+# ignore everything inside the library of kube-prometheus-stack
+kube-prometheus-stack/*
+
+# ignore intellij .idea folder
+.idea
+
+*/target*
