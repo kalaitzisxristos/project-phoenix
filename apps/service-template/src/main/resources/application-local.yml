@@ -6,7 +6,12 @@
 spring:
   cloud:
     consul:
-      enabled: false
+      enabled: true
+      # Use 'localhost' if port-forwarded, or the internal K8s DNS name if running inside the cluster
+      host: ${CONSUL_HOST:consul-server.consul.svc.cluster.local}
+      port: ${CONSUL_PORT:8500}
+      discovery:
+        enabled: true
 
 # You can keep this to test or remove it. The application will run on the default 8080 if removed.
 server:

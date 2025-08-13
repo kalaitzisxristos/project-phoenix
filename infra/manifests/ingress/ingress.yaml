@@ -1,0 +1,52 @@
+# infra/manifests/ingress/ingress.yaml (Corrected Version)
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: phoenix-ingress
+  namespace: default
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  # This tells the NGINX Ingress Controller to manage this Ingress
+  ingressClassName: "nginx"
+  rules:
+    - http:
+        paths:
+          - path: /service-template
+            pathType: Prefix
+            backend:
+              service:
+                # Correct port for the ClusterIP service
+                name: service-template
+                port:
+                  number: 8080
+          # --- The following rules are for services in other namespaces ---
+          # --- They will NOT work until I create Ingresses in their respective namespaces ---
+          # - path: /consul
+          #   pathType: Prefix
+          #   backend:
+          #     service:
+          #       name: consul-ui
+          #       port:
+          #         number: 80
+          # - path: /prometheus
+          #   pathType: Prefix
+          #   backend:
+          #     service:
+          #       name: prometheus-kube-prometheus-prometheus
+          #       port:
+          #         number: 9090
+          # - path: /grafana
+          #   pathType: Prefix
+          #   backend:
+          #     service:
+          #       name: prometheus-grafana
+          #       port:
+          #         number: 3000
+          # - path: /tempo
+          #   pathType: Prefix
+          #   backend:
+          #     service:
+          #       name: tempo
+          #       port:
+          #         number: 3200

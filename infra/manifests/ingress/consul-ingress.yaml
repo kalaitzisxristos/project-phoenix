@@ -1,0 +1,22 @@
+# infra/manifests/ingress/consul-ingress.yaml (Updated)
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: consul-ingress
+  namespace: consul
+  # Add this annotation to strip the path before forwarding
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - http:
+        paths:
+          # Access the Consul UI via http://localhost/consul
+          - path: /consul
+            pathType: Prefix
+            backend:
+              service:
+                name: consul-ui
+                port:
+                  number: 80
