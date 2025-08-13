@@ -15,4 +15,4 @@ spring:
 
 # You can keep this to test or remove it. The application will run on the default 8080 if removed.
 server:
-  port: 8081
+  port: 8080

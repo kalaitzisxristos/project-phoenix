@@ -1,21 +1,21 @@
+# infra/clusters/kind-config.yaml (Updated with new ports)
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 name: phoenix-cluster
 nodes:
   - role: control-plane
-  - role: worker
-  - role: worker
-    # Designate this worker for ingress
     kubeadmConfigPatches:
       - |
-        kind: JoinConfiguration
+        kind: InitConfiguration
         nodeRegistration:
           kubeletExtraArgs:
             node-labels: "ingress-ready=true"
     extraPortMappings:
       - containerPort: 80
-        hostPort: 80
+        hostPort: 9080
         protocol: TCP
       - containerPort: 443
-        hostPort: 443
+        hostPort: 9443
         protocol: TCP
+  - role: worker
+  - role: worker

@@ -42,10 +42,13 @@ helm install consul hashicorp/consul \
   -f "$CONSUL_VALUES" \
   --namespace consul \
   --create-namespace \
-  --wait
+  --wait \
+  --set syncCatalog.enabled=true
 
 # === 6. Install Tempo ===
 echo -e "\n🕓\n🕓 Installing Tempo (tracing backend)...\n🕓"
+# This installs the Tempo backend for collecting traces.
+# The UI for Tempo is accessed via Grafana (http://localhost:3000).
 helm install tempo grafana/tempo \
   --namespace tempo \
   --create-namespace
