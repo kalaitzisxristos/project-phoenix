@@ -1,6 +1,8 @@
 # Local Development Setup Guide
 
-This guide provides step-by-step instructions to set up a complete, production-grade local development environment for Project Phoenix on a **Windows machine using Docker Desktop and Git Bash**.
+> **Platform Note:** This guide provides detailed setup instructions for a **Windows machine using Docker Desktop and Git Bash**.
+>
+> For **macOS/Linux** users, the `kubectl` and `kind` commands are the same, but you can use a package manager like [Homebrew](https://brew.sh/) to install the required command-line tools (e.g., `brew install kubectl kind helm`).
 
 ## Prerequisites
 

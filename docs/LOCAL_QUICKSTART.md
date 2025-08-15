@@ -1,6 +1,6 @@
 # Local Environment Quickstart Guide
 
-This guide contains the daily-use commands to start, stop, and manage the Project Phoenix local Kubernetes environment. For one-time setup instructions, see the [LOCAL\_SETUP.md](https://www.google.com/search?q=../LOCAL_SETUP.md) file.
+This guide contains the daily-use commands to start, stop, and manage the Project Phoenix local Kubernetes environment. For one-time setup instructions, see the [LOCAL\_SETUP.md](../LOCAL_SETUP.md) file.
 
 -----
 ## Helper script (wiping everything)

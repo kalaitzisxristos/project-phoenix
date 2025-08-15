@@ -1,7 +1,7 @@
 # Project Phoenix Architecture
 
-**Version:** 1.2  
-**Date:** 2025-08-13
+**Version:** 1.3 
+**Date:** 2025-08-15
 
 This document outlines the architecture for Project Phoenix, a backend-only, cloud-native microservices platform designed for real-time financial transaction simulation and fraud detection. It consolidates architectural principles, system components, technology choices, and key decisions (ADRs) made for the project.
 
@@ -26,27 +26,27 @@ Project Phoenix follows an **event-driven microservices architecture** deployed 
 
 1. API requests are sent to the platform (e.g., via Postman or automated integration tests).
 2. Requests are routed via **ingress-nginx** to the appropriate backend service.
-3. **Transaction Simulator Service** reads transaction datasets and publishes financial transactions to the Kafka `transactions` topic.
-4. **Fraud Detection Service** consumes Kafka events for real-time fraud analysis.
+3. The **`simulator-transactions`** service reads transaction datasets and publishes financial transactions to the Kafka `transactions` topic.
+4. The **`fraud-detection-service`** consumes Kafka events for real-time fraud analysis.
 5. Processed results are persisted in **PostgreSQL** or optionally cached in **Redis**.
 6. Asynchronous tasks or cross-service notifications use Kafka topics.
 7. **Observability**:
-    - Metrics: Prometheus
-    - Traces: Tempo
-    - Logs: `kubectl logs` for now (centralized Loki deferred per ADR-003)
+   - Metrics: Prometheus
+   - Traces: Tempo
+   - Logs: `kubectl logs` for now (centralized Loki deferred per ADR-003)
 
 ### 2.2 Component Responsibilities
 
 | Component | Responsibility |
 |-----------|----------------|
-| **Transaction Simulator Service** | Reads transaction dataset, publishes Kafka messages simulating real-time payment streams. |
-| **Fraud Detection Service** | Consumes Kafka stream, analyzes transactions, raises alerts for suspicious activity. |
+| **`simulator-transactions`** | Reads transaction dataset, publishes Kafka messages simulating real-time payment streams. |
+| **`fraud-detection-service`** | Consumes Kafka stream, analyzes transactions, raises alerts for suspicious activity. |
 | **PostgreSQL** | Primary datastore for transaction records, fraud reports, and analytics. |
 | **Redis** | Optional caching for high-frequency access or ephemeral state. |
 | **Kafka** | Core event streaming backbone for all transaction events. |
 | **Ingress-nginx** | API gateway and HTTP routing to backend microservices. |
 | **Prometheus** | Metrics collection and alerting. |
-| **Tempo** | Distributed tracing across microservices. |
+| **Tempo** | Distributed tracing for microservice interactions. |
 | **Loki** | Centralized logging deferred (ADR-003). |
 
 ---
@@ -67,7 +67,7 @@ Project Phoenix follows an **event-driven microservices architecture** deployed 
 
 ---
 
-## 4. Architectural Decisions 
+## 4. Architectural Decisions
 \
 All significant architectural decisions are documented in detail in the ADR log: [docs/ADRs/README.md](./docs/ADRs/README.md).
 
@@ -90,5 +90,14 @@ All significant architectural decisions are documented in detail in the ADR log:
 - **Service Mesh Security:** Full Consul integration for secure communication and observability.
 
 ---
+
+```mermaid
+graph TD
+    A[Client] -->|HTTP Request| B(ingress-nginx);
+    B --> C(fraud-detection-service);
+    D(simulator-transactions) -->|Publishes Events| E(Kafka Topic: transactions);
+    E -->|Consumes Events| C;
+    C -->|Saves Report| F(PostgreSQL);
+```
 
 **End of Document**
